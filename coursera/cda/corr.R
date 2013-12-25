@@ -10,7 +10,7 @@ corr<-function(directory,threshold=0) {
       #print(myresult)
      }
    }
-   return(myresult)
+   return(as.numeric(myresult))
 }
 
 mycorr<-function(directory='specdata',id=1) {
