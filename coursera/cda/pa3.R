@@ -56,7 +56,7 @@ state<-outcome2$State
 par(las=2)  # x axis labels perpendicular to the axis
 boxplot(death ~ state, xlab='State', ylab='30-day death rate', main='heart attach 30-day death rate by state')
 #
-# PA3.4
+# PA3.4: plot
 #
 outcome<-read.csv('outcome-of-care-measures.csv', colClasses='character')
 hospital<-read.csv('hospital-data.csv', colClasses='character')
@@ -70,4 +70,12 @@ xyplot(death ~ npatient | owner, group=owner, xlab='number of patients seen', yl
 # linear regression
 #
 xyplot(death ~ npatient | owner, group=owner, xlab='number of patients seen', ylab='30-day death rate', main='heart attack 30-day death rate by ownership',panel=function(x,y) {panel.xyplot(x,y);panel.lmline(x,y)})
+#
+# PA3.5
+#
+state<-as.data.frame(unique(outcome$State))
+best<-function(state,outcome) {
+  			      
+}
+
 
