@@ -73,9 +73,18 @@ xyplot(death ~ npatient | owner, group=owner, xlab='number of patients seen', yl
 #
 # PA3.5
 #
-state<-as.data.frame(unique(outcome$State))
+
 best<-function(state,outcome) {
-  			      
+    if (outcome=='heart attack') { i <-11 }
+    else if (outcome=='heart failure') { i <-17 }
+    else if (outcome=='pneumonia') { i <-23 }
+    else { stop('invalid name') }
+    mydata<-read.csv('outcome-of-care-measures.csv', colClasses='character')
+    states<-unique(mydata$State)
+    if (is.element(state, states)) {
+        mydata2<-mydata[ mydata$State == state , c(2,7,i)]  #Name, State, itemSelected
+        print (head( mydata2[with( mydata2, order (3,1))] , n=1 )$Hospital.Name)
+    } else { stop('invalid state') }  			      
 }
 
 
