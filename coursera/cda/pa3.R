@@ -151,3 +151,24 @@ rankall<-function(outcome, num='best') {
     names(bar)[2]<-'hospital'
     return (bar)
 }
+#
+# PA4.1
+#
+count<-function(cause=NULL) {
+    causes<-c('asphyxiation', 'blunt force', 'other', 'shooting',
+              'stabbing', 'unknown')
+    if (is.element(cause, causes)) {
+        homi<-readLines('homicides.txt')
+        mydata<-grep( paste('cause: ',cause,sep=''), homi, ignore.case=T)
+        return(length(mydata))
+    } else { stop('invalid cause') }
+}
+#
+# PA4.2
+#
+agecount<-function(age=NULL) {
+    if (is.null(age)) {stop('invalid age') }
+    homi<-readLines('homicides.txt')
+    mydata<-grep( paste('[,:] ', age,' years',sep=''), homi, ignore.case=T)
+    return(length(mydata))
+}
