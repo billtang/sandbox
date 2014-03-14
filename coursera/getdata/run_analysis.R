@@ -1,5 +1,11 @@
+### run_analysis.R
+#
+#- unzip uci data as '~/uci'. You would see '~/uci/test' and '~/uci/train' directories
+#- source( 'run_analysis.R')
+#- createTidy( '~/uci', 'tidy.txt' ); this generates file 'tidy.txt' for submission
+#
 # location: path to uci data
-# tt: test or train
+# tt: 'test' or 'train'
 library(reshape2)
 readData <- function(tt, location) {
     fpath <- file.path(location, paste(tt,'/', 'subject_', tt, '.txt', sep=''))
@@ -25,7 +31,7 @@ readData <- function(tt, location) {
     data
 }
 #
-# location is top directory of uci data: '~/cr/duke/uci'
+# location is top directory of uci data: '~/uci'
 #
 combineData <- function(location) {
     data <- rbind(readData('test', location), readData('train', location))
@@ -38,7 +44,7 @@ combineData <- function(location) {
 
 }
 #
-# location is top directory of uci data: '~/cr/duke/uci'
+# location is top directory of uci data: '~/uci'
 #
 applyLabels <- function( location ) {
     mydata<-combineData(location)
