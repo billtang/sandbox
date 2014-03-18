@@ -11,3 +11,9 @@ str(hist(mydata, breaks=mybreaks, plot=F))
 
 # $ breaks  : num [1:11] 4.3 4.64 4.98 5.32 5.66 6 6.34 6.68 7.02 7.36 ...
 # $ counts  : int [1:10] 16 17 27 9 23 18 12 20 3 5
+
+foo$V3=as.numeric(foo$V3)
+foo$V4=as.numeric(foo$V4)
+bar=lm(foo$V4 ~ foo$V3)
+summary(bar)
+
