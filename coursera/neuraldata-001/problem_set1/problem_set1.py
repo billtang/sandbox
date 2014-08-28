@@ -73,22 +73,29 @@ def good_AP_finder(time,voltage):
     """
  
     APTimes = []
-       
     #Let's make sure the input looks at least reasonable
     if (len(voltage) != len(time)):
         print "Can't run - the vectors aren't the same length!"
         return APTimes
     
     ##Your Code Here!
-    #mypeaks = []
-    #j = 0
-    #mypeaks[0] = 0
+    lasti = 0
+    lastv = 0
+    slope = 0
+    lastslope = 0
+
     for i in range(0, len(voltage)):
-        if ( voltage[i] > 400 or voltage[i] < -400 ):
-            #if ( mypeaks[j] > voltage[i] or mypeaks[j] < voltage[i] ):
-            #mypeak[j] = voltage[i]
-            APTimes.append(time[i])
-            #j = j+1
+        if (lastv==0):
+            lastv = voltage[i]
+            lasti = i
+            continue
+        slope = voltage[i] - lastv
+        if (slope * lastslope < 0): # look for sign change
+            if (lastv > 100 or lastv < -100):
+                APTimes.append( time[lasti] )
+        lastslope = slope
+        lastv = voltage[i]
+        lasti = i
 
     return APTimes
     
@@ -156,16 +163,15 @@ def plot_spikes(time,voltage,APTimes,titlestr):
     plot.  The function creates a labeled plot showing the raw voltage signal
     and indicating the location of detected spikes with red tick marks (|)
     """
-    #plt.figure()
-    fig=plt.figure()
+    plt.figure()
     plt.plot(time,voltage)
     for i in range(0, len(APTimes)):
         plt.plot(APTimes[i],500,'r|')
     plt.title(titlestr)
     plt.xlabel('Time (ms)')
-    plt.ylabel('Voltage ($\mu$V)')
+    #plt.ylabel('Voltage ($\mu$V)')
+    plt.ylabel('Voltage (uV)')
     plt.show()
-    plt.savefig('spikes.png', dpi=fig.dpi)
     
 def plot_waveforms(time,voltage,APTimes,titlestr):
     """
@@ -176,8 +182,7 @@ def plot_waveforms(time,voltage,APTimes,titlestr):
     """  
     mytime=[]
     myvoltage=[]
-    #plt.figure()
-    fig=plt.figure()
+    plt.figure()
     j=0
     myleft = APTimes[0] - 0.003
     myright = APTimes[0] + 0.003
@@ -199,18 +204,37 @@ def plot_waveforms(time,voltage,APTimes,titlestr):
     plt.plot(mytime, myvoltage)
     plt.title(titlestr)
     plt.xlabel('Time (ms)')
-    plt.ylabel('Voltage ($\mu$V)')
+    #plt.ylabel('Voltage ($\mu$V)')
+    plt.ylabel('Voltage (uV)')
     plt.show()
-    plt.savefig('waveforms.png', dpi=fig.dpi)
         
 ##########################
 #You can put the code that calls the above functions down here    
-if __name__ == "__main__":
-    t,v = load_data('spikes_example.npy')    
-    actualTimes = get_actual_times('spikes_example_answers.npy')
+def run_test(myexample,myanswer):
+    t,v = load_data(myexample)    
+    actualTimes = get_actual_times(myanswer)
     APTime = good_AP_finder(t,v)
     plot_spikes(t,v,APTime,'Action Potentials in Raw Signal')
     plot_waveforms(t,v,APTime,'Waveforms')
     detector_tester(APTime,actualTimes)
+
+def run_actual(myexample):
+    t,v = load_data(myexample)    
+    #actualTimes = get_actual_times(myanswer)
+    APTime = good_AP_finder(t,v)
+    plot_spikes(t,v,APTime,'Action Potentials in Raw Signal')
+    plot_waveforms(t,v,APTime,'Waveforms')
+    #detector_tester(APTime,actualTimes)
+
+
+if __name__ == "__main__":
+    run_test('spikes_example.npy', 'spikes_example_answers.npy')
+    run_test('spikes_easy_practice.npy', 'spikes_easy_practice_answers.npy')
+    run_test('spikes_hard_practice.npy', 'spikes_hard_practice_answers.npy')
+
+    run_actual('spikes_easy_test.npy')
+    run_actual('spikes_hard_test.npy')
+
+
 
 
